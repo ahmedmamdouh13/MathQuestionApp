@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
 
-        mainViewModel.print("1x5x5+5x5", Constants.multiplySignFlag, Constants.plusSignFlag)
+        mainViewModel.print("1x5x5-5x5", Constants.multiplySignFlag, Constants.minusSignFlag)
 
 
         mainViewModel.resultLiveData.observe(this){ list ->

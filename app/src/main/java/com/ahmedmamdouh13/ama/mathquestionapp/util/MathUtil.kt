@@ -8,16 +8,19 @@ import com.ahmedmamdouh13.ama.mathquestionapp.Constants.multiplySign
 import com.ahmedmamdouh13.ama.mathquestionapp.Constants.plusSign
 import com.ahmedmamdouh13.ama.mathquestionapp.Constants.secondToResolve
 import com.ahmedmamdouh13.ama.mathquestionapp.mapper.OperatorMapper
-import java.util.*
 import javax.inject.Inject
 
-class MathUtil @Inject constructor() {
+class MathUtil @Inject constructor(private val mapper: OperatorMapper) {
+
+
 
     fun parseEquation(equation: String, op1: Int, op2: Int): Double {
-        val firstToResolve = getOperatorByOrder(op1, op2, firstToResolve)
-        val lastToResolve = getOperatorByOrder(op1, op2, secondToResolve)
+
+        val firstToResolve = mapper.getOperatorByOrder(op1, op2, firstToResolve)
 
         return if (op2 != -1) { // check if there is another operator.
+            val lastToResolve = mapper.getOperatorByOrder(op1, op2, secondToResolve)
+
             val firstDimen = solveFirstEquations(equation, lastToResolve, firstToResolve)
 
             solveFinalEquations(firstDimen, lastToResolve)
@@ -26,51 +29,16 @@ class MathUtil @Inject constructor() {
 
     }
 
-    private fun getOperatorByOrder(op1: Int, op2: Int, order: String): String {
-        return when (order) {
-            firstToResolve -> {
-                if (op1 > op2) OperatorMapper.getOperatorFromFlag(op1)
-                else OperatorMapper.getOperatorFromFlag(op2)
-            }
-            secondToResolve -> {
-                if (op1 < op2) OperatorMapper.getOperatorFromFlag(op1)
-                else OperatorMapper.getOperatorFromFlag(op2)
-            }
-            else -> ""
-        }
-    }
-
 
     // solve final raw of sole operator equation.
     private fun solveFinalEquations(firstDimenResult: String, lastToResolve: String): Double {
-
-        var sum = 0.0
-        val split = firstDimenResult.split(lastToResolve)
-
-        split.forEachIndexed { i, it ->
-            if (i == 0)
-                sum = it.toDouble()
-            else
-                when (lastToResolve) {
-                    plusSign -> sum += it.toDouble()
-                    minusSign -> sum -= it.toDouble()
-                    divideSign -> sum /= it.toDouble()
-                    multiplySign -> sum *= it.toDouble()
-                }
-
-        }
-        return sum
-
+        return getStepResult(firstDimenResult, lastToResolve)
     }
 
-    private fun solveFirstEquations(
-        equation: String,
-        lastToResolveOperator: String,
-        firstToResolveOperator: String
-    ): String {
+    private fun solveFirstEquations(equation: String, lastToResolveOperator: String, firstToResolveOperator: String): String {
 
         val equationLastToResolveSplit = equation.split(lastToResolveOperator)
-        // remove last step operator to find first to resolve equations.
+        // remove last step operator to find "first to resolve" equations.
 
         val memoryArrayList = arrayListOf<String>()
 
@@ -78,27 +46,14 @@ class MathUtil @Inject constructor() {
         memoryArrayList.addAll(equationLastToResolveSplit)
 
         equationLastToResolveSplit.forEachIndexed { i, eq ->
-            if (!eq.isDigitsOnly()) { // if not digit then resolve first equation is found.
-                val result =
-                    getStepResult(eq, firstToResolveOperator) // solve equation based on operator.
+            if (!eq.isDigitsOnly()) { // if not digit then "resolve first equation" is found.
+                val result = getStepResult(eq, firstToResolveOperator) // solve equation based on operator.
                 memoryArrayList[i] = result.toString() // replace equation with result.
             }
         }
 
         //return last step operators in their places.
-        return getLastStepEquation(memoryArrayList, lastToResolveOperator)
-    }
-
-    private fun getLastStepEquation(list: ArrayList<String>, op: String): String {
-
-        val stringBuilder = StringBuilder()
-
-        list.forEachIndexed { i, s ->
-            stringBuilder.append(s)
-            if (i < list.size - 1) stringBuilder.append(op)
-        }
-
-        return stringBuilder.toString()
+        return mapper.getLastStepEquation(memoryArrayList, lastToResolveOperator)
     }
 
     private fun getStepResult(eq: String, firstToResolveOperator: String): Double {
@@ -107,6 +62,7 @@ class MathUtil @Inject constructor() {
             multiplySign -> multiply(equationFirstToResolveSplit)
             divideSign -> divide(equationFirstToResolveSplit)
             plusSign -> plus(equationFirstToResolveSplit)
+            minusSign -> minus(equationFirstToResolveSplit)
             else -> 1.0
         }
 
@@ -117,6 +73,17 @@ class MathUtil @Inject constructor() {
         equationFirstToResolveSplit
             .forEach {
                 result += it.toDouble()
+            }
+        return result
+    }
+    private fun minus(equationFirstToResolveSplit: List<String>): Double {
+        var result = 0.0
+        equationFirstToResolveSplit
+            .forEachIndexed { i, it ->
+                if (i == 0)
+                    result = it.toDouble()
+                else
+                result -= it.toDouble()
             }
         return result
     }
