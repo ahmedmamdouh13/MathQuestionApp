@@ -2,6 +2,7 @@ package com.ahmedmamdouh13.ama.mathquestionapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.math.MathUtils
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.*
 import com.ahmedmamdouh13.ama.mathquestionapp.service.MathWorker
@@ -16,13 +17,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        mainViewModel.print("something")
 
-        val workRequest = OneTimeWorkRequest.Builder(MathWorker::class.java)
-                .setInitialDelay(5L, TimeUnit.SECONDS)
-                .build()
+        mainViewModel.print("1x5x5+5x5", Constants.multiplySignFlag, Constants.plusSignFlag)
 
-        WorkManager.getInstance(this).enqueue(workRequest)
+
+        mainViewModel.resultLiveData.observe(this){ list ->
+                println(list.outputData.getString("res") + " resultttt")
+        }
 
     }
 }
