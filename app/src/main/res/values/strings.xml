@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MathQuestionApp</string>
+    <string name="template_equation">3x5x5+8+6x9</string>
 </resources>
