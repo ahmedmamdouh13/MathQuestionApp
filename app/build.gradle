@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 def work_version = "2.5.0"
+def androidprofiler_version = "3.4.3"
 
 android {
     compileSdkVersion 30
@@ -28,6 +29,21 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            resValue("bool", "android_god_eye_manual_install", "false")
+            resValue("bool", "android_god_eye_need_notification", "false")
+            resValue("integer", "android_god_eye_monitor_port", "5390")
+            resValue("string", "android_god_eye_install_assets_path", "android-godeye-config/install.config")
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+
+            resValue("bool", "android_god_eye_manual_install", "false")
+            resValue("bool", "android_god_eye_need_notification", "true")
+            resValue("integer", "android_god_eye_monitor_port", "5390")
+            resValue("string", "android_god_eye_install_assets_path", "android-godeye-config/install.config")
         }
     }
     compileOptions {
@@ -65,4 +81,25 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 
 
+//    profiling
+
+    // Core module
+    implementation "cn.hikyson.godeye:godeye-core:$androidprofiler_version"
+    // Debug dashboard
+    debugImplementation "cn.hikyson.godeye:godeye-monitor:$androidprofiler_version"
+    // From Version 3.4.0, godeye-monitor-no-op has been removed.
+    // releaseImplementation 'cn.hikyson.godeye:godeye-monitor-no-op:$androidprofiler_version'
+    // Extra module, help to monitor network
+    implementation "cn.hikyson.godeye:godeye-okhttp:$androidprofiler_version"
+    // Extra module, help to monitor crash/ANR
+    implementation "cn.hikyson.godeye:godeye-xcrash:$androidprofiler_version"
+    // Extra module, help to monitor memory leak
+    debugImplementation "cn.hikyson.godeye:godeye-leakcanary:$androidprofiler_version"
+}
+apply plugin: 'cn.hikyson.methodcanary.plugin'
+AndroidGodEye {
+    enableMethodTracer true // Need method monitor, Attention, close it when in production, e.g: !gradle.startParameter.taskNames.contains("assembleRelease")
+    enableLifecycleTracer true // need page lifecycle method monitor
+    instrumentationRuleFilePath 'AndroidGodEye-MethodCanary.js'
+    instrumentationRuleIncludeClassNamePrefix(['com/ahmedmamdouh13/ama/mathquestionapp'])
 }
