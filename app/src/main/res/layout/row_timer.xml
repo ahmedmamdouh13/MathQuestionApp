@@ -15,7 +15,8 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@drawable/round_corner_white"
+            android:background="@drawable/round_corner_pads"
+            android:textColor="@color/white"
             android:text="30 Seconds"
             android:layout_margin="8dp"
             android:id="@+id/thirty_button"
@@ -24,7 +25,8 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@drawable/round_corner_white"
+            android:background="@drawable/round_corner_pads"
+            android:textColor="@color/white"
             android:text="15 Seconds"
             android:layout_margin="8dp"
 
@@ -44,7 +46,8 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@drawable/round_corner_white"
+            android:background="@drawable/round_corner_pads"
+            android:textColor="@color/white"
             android:text="5 Seconds"
             android:layout_margin="8dp"
 
@@ -54,7 +57,8 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@drawable/round_corner_white"
+            android:background="@drawable/round_corner_pads"
+            android:textColor="@color/white"
             android:text="10 Seconds"
             android:layout_margin="8dp"
 

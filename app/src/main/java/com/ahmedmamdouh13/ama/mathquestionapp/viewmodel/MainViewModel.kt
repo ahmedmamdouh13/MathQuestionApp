@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(
 
     init {
         _resultLiveData = workManager.getWorkInfosByTagLiveData(tag)
+        println("$jobIdCnt  recreated?!")
     }
 
     fun scheduleJob(equation: String, op1: Int, op2: Int, duration: Long = 1L) {

@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/equation_textview_fragmentcalculator"
         android:hint="Enter your equation"
+        android:textStyle="bold"
         android:textColorHint="@color/white"
         android:layout_gravity="center"
         android:textColor="@color/white"

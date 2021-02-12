@@ -14,13 +14,19 @@
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_margin="2dp"
             android:text="x"
+            android:textColor="@color/white"
+            android:background="@drawable/round_corner_pads"
             android:id="@+id/multiply_button"
             />
 
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:textColor="@color/white"
+            android:layout_margin="2dp"
+            android:background="@drawable/round_corner_pads"
             android:text="/"
             android:id="@+id/divide_button"
             />
@@ -38,6 +44,9 @@
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:textColor="@color/white"
+            android:layout_margin="2dp"
+            android:background="@drawable/round_corner_pads"
             android:text="+"
             android:id="@+id/plus_button"
             />
@@ -45,6 +54,9 @@
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:textColor="@color/white"
+            android:layout_margin="2dp"
+            android:background="@drawable/round_corner_pads"
             android:text="-"
             android:id="@+id/minus_button"
             />

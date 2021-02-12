@@ -26,16 +26,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
 
     private lateinit var equationsAdapter: EquationsAdapter
-    private var equationMap: LinkedHashMap<Int, EquationModel> = linkedMapOf()
+    private var equationMap: LinkedHashMap<Int, EquationModel> = LinkedHashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this) .get(MainViewModel::class.java)
 
         fab = findViewById(R.id.addequation_fab)
         recyclerview = findViewById(R.id.recyclerview)
         mainContainer = findViewById(R.id.main_container)
+
 
 
         fab.setOnClickListener {
@@ -45,14 +46,13 @@ class MainActivity : AppCompatActivity() {
                 println("Clicked")
             }
 
-        setUpRecyclerView()
+            setUpRecyclerView()
 
 
-        observeEquations()
+            observeEquations()
 
 
-        observeEquationResults()
-
+            observeEquationResults()
 
     }
 
@@ -108,6 +108,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mainViewModel.cancelAllJobs()
+        equationsAdapter.disposeTimer()
     }
 
     override fun onBackPressed() {

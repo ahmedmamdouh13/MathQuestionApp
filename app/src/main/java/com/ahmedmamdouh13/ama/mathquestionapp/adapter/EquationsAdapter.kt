@@ -26,7 +26,7 @@ class EquationsAdapter :
     }
 
     override fun onBindViewHolder(holder: EquationsViewHolder, position: Int) {
-        holder.bind(list.values.toList()[position], position)
+        holder.bind(list.values.toList()[position])
     }
 
     override fun getItemCount(): Int = list.size
@@ -61,6 +61,9 @@ class EquationsAdapter :
             }.start()
 
     }
+    fun disposeTimer(){
+        counter?.cancel()
+    }
 
     inner class EquationsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -70,27 +73,27 @@ class EquationsAdapter :
         private val answerTextView = itemView.findViewById<TextView>(R.id.answer_textview)
 
         private val colorRed =
-            ContextCompat.getColor(itemView.context, android.R.color.holo_green_dark)
+            ContextCompat.getColor(itemView.context, R.color.pad_color)
         private val colorGreen =
             ContextCompat.getColor(itemView.context, R.color.semiblack)
 
-        fun bind(equationModel: EquationModel, pos: Int) {
+        fun bind(equationModel: EquationModel) {
 
             equationTextView.text = equationModel.equation
             answerTextView.text = equationModel.answer
             val delayed = equationModel.delayed
 
             when {
-                delayed > 0L -> {
+                delayed >= 0L -> {
                     timerTextView.text = delayed.toString()
                     customProgressView.setProgress(delayed.toFloat())
                     customProgressView.setColor(colorRed)
-                    timerTextView.setTextColor(colorGreen)
+//                    timerTextView.setTextColor(colorGreen)
                     answerTextView.visibility = View.GONE
                 }
                 else -> {
                     timerTextView.text = "Done"
-                    timerTextView.setTextColor(colorRed)
+//                    timerTextView.setTextColor(colorRed)
                     customProgressView.setProgress(1f)
                     customProgressView.setColor(colorGreen)
                     answerTextView.visibility = View.VISIBLE
