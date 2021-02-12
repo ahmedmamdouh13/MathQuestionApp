@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_purple700_purple500">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/next_fab_fragmentcalculator"
+        android:id="@+id/next_fab_fragmencalculator"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
+        app:backgroundTint="@color/semiblack"
+        app:srcCompat="@drawable/ic_baseline_navigate_next_24"
+
+        app:fabCustomSize="50dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/equation_textview_fragmentcalculator"
+        android:hint="Enter your equation"
+        android:textColorHint="@color/white"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginBottom="150dp"
+        style="@style/TextAppearance.AppCompat.Headline"
         />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="50dp"
+        >
+
+
+        <include layout="@layout/row_number_pad"
+            android:id="@+id/num_pad"
+            />
+        <include layout="@layout/row_operators"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="8dp"
+            android:id="@+id/operator_pad"
+            />
+
+    </LinearLayout>
 
 </FrameLayout>

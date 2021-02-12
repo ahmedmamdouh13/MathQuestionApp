@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MathQuestionApp</string>
     <string name="template_equation">3x5x5+8+6x9</string>
+    <string name="enter_your_equation">Enter your equation</string>
 </resources>

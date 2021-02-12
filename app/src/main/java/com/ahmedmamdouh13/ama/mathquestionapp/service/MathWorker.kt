@@ -1,14 +1,13 @@
 package com.ahmedmamdouh13.ama.mathquestionapp.service
 
 import android.content.Context
-import android.os.Debug
 import androidx.hilt.work.HiltWorker
 import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.ahmedmamdouh13.ama.mathquestionapp.Constants
 import com.ahmedmamdouh13.ama.mathquestionapp.Constants.EQUATION_KEY
-import com.ahmedmamdouh13.ama.mathquestionapp.util.MathUtil
+import com.ahmedmamdouh13.ama.mathquestionapp.usecase.MathUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
@@ -16,7 +15,7 @@ import dagger.assisted.AssistedInject
 class MathWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val util: MathUtil
+    private val util: MathUseCase
 ) : Worker(context, workerParameters) {
 
     private val parameters = workerParameters

@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ahmedmamdouh13.ama.mathquestionapp.R
 import com.ahmedmamdouh13.ama.mathquestionapp.custom.CustomProgressView
 import com.ahmedmamdouh13.ama.mathquestionapp.model.EquationModel
+import kotlinx.coroutines.delay
 
 class EquationsAdapter :
     RecyclerView.Adapter<EquationsAdapter.EquationsViewHolder>() {
 
+    private var counter: CountDownTimer? = null
     private var list: LinkedHashMap<Int, EquationModel> = linkedMapOf()
-    private val cntDown: ArrayList<Long> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EquationsViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -33,27 +34,31 @@ class EquationsAdapter :
     fun setNewList(list: LinkedHashMap<Int, EquationModel>) {
         this.list = list
         setDelayedTimeCounter()
+        notifyDataSetChanged()
     }
+    private var isInitialized: Boolean = false
 
-    private fun setDelayedTimeCounter() {
-        list.values.toList().forEach {
-            cntDown.add(it.delayed)
-        }
+    fun setDelayedTimeCounter() {
 
-        object : CountDownTimer(30000, 1000) {
-            override fun onTick(p0: Long) {
-                for (l in 0 until cntDown.size) {
-                    cntDown[l]--
-                    list[l]?.delayed = cntDown[l]
+            counter?.cancel()
+
+
+            counter = object : CountDownTimer(30000, 1000) {
+                override fun onTick(p0: Long) {
+                    if (list.isNotEmpty()) {
+                        for (l in 0 until list.size) {
+                            var delayed = list.values.toList()[l].delayed
+                            delayed--
+                            list.values.toList()[l].delayed = delayed
+                        }
+                        notifyDataSetChanged()
+                    }
                 }
-                notifyDataSetChanged()
-            }
 
-            override fun onFinish() {
+                override fun onFinish() {
+                }
 
-            }
-
-        }.start()
+            }.start()
 
     }
 
@@ -73,11 +78,12 @@ class EquationsAdapter :
 
             equationTextView.text = equationModel.equation
             answerTextView.text = equationModel.answer
+            val delayed = equationModel.delayed
 
             when {
-                cntDown[pos] > 0L -> {
-                    timerTextView.text = cntDown[pos].toString()
-                    customProgressView.setProgress(cntDown[pos].toFloat())
+                delayed > 0L -> {
+                    timerTextView.text = delayed.toString()
+                    customProgressView.setProgress(delayed.toFloat())
                     customProgressView.setColor(colorRed)
                     timerTextView.setTextColor(colorGreen)
                     answerTextView.visibility = View.GONE

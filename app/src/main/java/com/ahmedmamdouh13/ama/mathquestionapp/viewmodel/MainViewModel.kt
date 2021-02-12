@@ -32,19 +32,14 @@ class MainViewModel @Inject constructor(
 
     private var jobIdCnt = 0
 
-    private val equationModelLiveData: MutableLiveData<LinkedHashMap<Int, EquationModel>> = MutableLiveData()
-    val _equationModelLiveData: MutableLiveData<LinkedHashMap<Int, EquationModel>> = equationModelLiveData
+    private val equationModelLiveData: MutableLiveData<EquationModel> = MutableLiveData()
+    val _equationModelLiveData: MutableLiveData<EquationModel> = equationModelLiveData
 
-    private var equationMap: LinkedHashMap<Int, EquationModel> = linkedMapOf()
     private val tag = "math"
 
 
     init {
-
-//        workManager.cancelAllWork()
-//        pruneFinishedJobs()
         _resultLiveData = workManager.getWorkInfosByTagLiveData(tag)
-//        workManager.cancelAllWorkByTag("math")
     }
 
     fun scheduleJob(equation: String, op1: Int, op2: Int, duration: Long = 1L) {
@@ -66,7 +61,6 @@ class MainViewModel @Inject constructor(
             .build()
 
 
-        val id = workRequest.id
 
         workManager.enqueue(workRequest)
 
@@ -79,12 +73,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun displayEquation(jobIdCnt: Int, equation: String, duration: Long) {
-        equationMap[jobIdCnt] = EquationModel().apply {
+        val equationModel = EquationModel().apply {
             this.jobId = jobIdCnt
             this.equation = equation
             this.delayed = duration
         }
-        equationModelLiveData.value = equationMap
+        equationModelLiveData.value = equationModel
     }
 
     fun cancelFinishedJob(uuid: UUID) {

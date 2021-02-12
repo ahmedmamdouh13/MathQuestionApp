@@ -15,6 +15,15 @@ class OperatorMapper @Inject constructor() {
             else -> ""
         }
     }
+     fun getFlagFromOperator(op: String): Int {
+      return  when(op){
+            Constants.multiplySign -> Constants.multiplySignFlag
+            Constants.divideSign -> Constants.divideSignFlag
+            Constants.plusSign -> Constants.plusSignFlag
+            Constants.minusSign -> Constants.minusSignFlag
+            else -> -1
+        }
+    }
 
 
     fun getOperatorByOrder(op1: Int, op2: Int, order: String): String {
