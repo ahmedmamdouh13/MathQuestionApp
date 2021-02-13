@@ -17,7 +17,7 @@ class CustomProgressView @JvmOverloads constructor(
         this.setWillNotDraw(false)
     }
 
-    var customColor = ContextCompat.getColor(context, android.R.color.transparent)
+    var customColor = ContextCompat.getColor(context, R.color.semiblack)
 
     private var progress: Float = 1f
     private var paint = Paint()

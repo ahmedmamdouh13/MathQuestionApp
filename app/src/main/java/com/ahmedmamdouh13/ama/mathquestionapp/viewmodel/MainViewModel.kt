@@ -1,5 +1,6 @@
 package com.ahmedmamdouh13.ama.mathquestionapp.viewmodel
 
+import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,16 +15,18 @@ import com.ahmedmamdouh13.ama.mathquestionapp.Constants.op1Key
 import com.ahmedmamdouh13.ama.mathquestionapp.Constants.op2Key
 import com.ahmedmamdouh13.ama.mathquestionapp.model.EquationModel
 import com.ahmedmamdouh13.ama.mathquestionapp.service.MathWorker
+import com.ahmedmamdouh13.ama.mathquestionapp.util.LocationUtil
+import com.ahmedmamdouh13.ama.mathquestionapp.util.MyPermissions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.collections.LinkedHashMap
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
+    private val locationUtil: LocationUtil
 ) : ViewModel() {
 
     private val workManager: WorkManager = WorkManager.getInstance(context)
@@ -33,13 +36,18 @@ class MainViewModel @Inject constructor(
     private var jobIdCnt = 0
 
     private val equationModelLiveData: MutableLiveData<EquationModel> = MutableLiveData()
-    val _equationModelLiveData: MutableLiveData<EquationModel> = equationModelLiveData
+    val _equationModelLiveData: LiveData<EquationModel> = equationModelLiveData
+
+
+    private val locationInfoLiveData: MutableLiveData<String> = MutableLiveData()
+    val _locationInfoLiveData: LiveData<String> = locationInfoLiveData
 
     private val tag = "math"
 
 
     init {
         _resultLiveData = workManager.getWorkInfosByTagLiveData(tag)
+        println("$jobIdCnt  recreated?!")
     }
 
     fun scheduleJob(equation: String, op1: Int, op2: Int, duration: Long = 1L) {
@@ -87,5 +95,19 @@ class MainViewModel @Inject constructor(
 
     fun cancelAllJobs() {
         workManager.cancelAllWork()
+    }
+
+    fun getLocationInfo(context: Activity) {
+
+        if (!MyPermissions.isLocationPermissionGranted(context)) {
+            MyPermissions.requestPermissions(context)
+        } else {
+            locationUtil.getLastKnownLocation(context) {
+                val loc = "Longitude: " + it?.longitude.toString() + ", Latitude: " + it?.latitude.toString()
+
+                locationInfoLiveData.value = loc
+            }
+        }
+
     }
 }

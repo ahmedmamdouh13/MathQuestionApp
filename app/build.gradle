@@ -67,6 +67,7 @@ dependencies {
 
     //dagger hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //work manager
@@ -92,10 +93,7 @@ dependencies {
     implementation "cn.hikyson.godeye:godeye-core:$androidprofiler_version"
     // Debug dashboard
     debugImplementation "cn.hikyson.godeye:godeye-monitor:$androidprofiler_version"
-    // From Version 3.4.0, godeye-monitor-no-op has been removed.
-    // releaseImplementation 'cn.hikyson.godeye:godeye-monitor-no-op:$androidprofiler_version'
-    // Extra module, help to monitor network
-    implementation "cn.hikyson.godeye:godeye-okhttp:$androidprofiler_version"
+
     // Extra module, help to monitor crash/ANR
     implementation "cn.hikyson.godeye:godeye-xcrash:$androidprofiler_version"
     // Extra module, help to monitor memory leak
@@ -103,8 +101,8 @@ dependencies {
 }
 apply plugin: 'cn.hikyson.methodcanary.plugin'
 AndroidGodEye {
-    enableMethodTracer true // Need method monitor, Attention, close it when in production, e.g: !gradle.startParameter.taskNames.contains("assembleRelease")
-    enableLifecycleTracer true // need page lifecycle method monitor
+    enableMethodTracer false // Need method monitor, Attention, close it when in production, e.g: !gradle.startParameter.taskNames.contains("assembleRelease")
+    enableLifecycleTracer false // need page lifecycle method monitor
     instrumentationRuleFilePath 'AndroidGodEye-MethodCanary.js'
     instrumentationRuleIncludeClassNamePrefix(['com/ahmedmamdouh13/ama/mathquestionapp'])
 }
