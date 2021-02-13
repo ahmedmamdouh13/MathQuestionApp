@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.ahmedmamdouh13.ama.mathquestionapp.Constants
 import com.ahmedmamdouh13.ama.mathquestionapp.R
 import com.ahmedmamdouh13.ama.mathquestionapp.custom.NumPadView
 import com.ahmedmamdouh13.ama.mathquestionapp.custom.OperatorPadView
@@ -41,15 +40,23 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
         }
 
         OperatorPadView(binder.operatorPad.root).onOperatorPadClicked {
-            if (validateOperators(it)) {
-                val text = binder.equationTextviewFragmentcalculator.text
-                if (text.isNotEmpty() && text.last().isDigit()) {
+            val text = binder.equationTextviewFragmentcalculator.text
+            if (text.isNotEmpty() && text.last().isDigit()) {
+                if (validateOperators(it))
                     binder.equationTextviewFragmentcalculator.append(it)
-                } else {
-                    Toast.makeText(context, "Can't have an operator in the beginning or beside another.", Toast.LENGTH_SHORT).show()
+                else {
+                    Toast.makeText(
+                        context,
+                        "Only two types of operators allowed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else {
-                Toast.makeText(context, "Only two types of operators allowed.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Can't have an operator in the beginning or beside another.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -70,8 +77,7 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
                         getOp2()
                     )
                     operators.clear()
-                }
-                else Toast.makeText(context, "Invalid Equation.", Toast.LENGTH_SHORT).show()
+                } else Toast.makeText(context, "Invalid Equation.", Toast.LENGTH_SHORT).show()
             }
 
 

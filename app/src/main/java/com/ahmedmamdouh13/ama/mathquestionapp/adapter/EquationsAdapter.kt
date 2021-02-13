@@ -43,7 +43,7 @@ class EquationsAdapter :
             counter?.cancel()
 
 
-            counter = object : CountDownTimer(30000, 1000) {
+            counter = object : CountDownTimer(31000, 1000) {
                 override fun onTick(p0: Long) {
                     if (list.isNotEmpty()) {
                         for (l in 0 until list.size) {
@@ -84,7 +84,7 @@ class EquationsAdapter :
             val delayed = equationModel.delayed
 
             when {
-                delayed >= 0L -> {
+                delayed > 0L -> {
                     timerTextView.text = delayed.toString()
                     customProgressView.setProgress(delayed.toFloat())
                     customProgressView.setColor(colorRed)

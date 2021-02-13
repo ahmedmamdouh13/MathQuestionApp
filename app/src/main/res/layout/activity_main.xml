@@ -14,10 +14,23 @@
         android:id="@+id/recyclerview"
         android:paddingBottom="100dp"
         android:clipToPadding="false"
-        tools:listitem="@layout/item_equation"
+
         />
 
 
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/placeholder_mainactivty"
+        android:text="Add (+) some equations to be solved."
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:background="@color/semiblack"
+        android:alpha="0.8"
+        />
     <androidx.fragment.app.FragmentContainerView
 
         android:id="@+id/main_container"
@@ -25,6 +38,7 @@
         android:layout_width="match_parent"
         android:visibility="gone"
         />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,6 +49,17 @@
         app:srcCompat="@drawable/ic_baseline_add_24"
 
         app:fabCustomSize="50dp"
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/location_imageview_mainactivity"
+        android:background="@drawable/round_corner_white"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_not_listed_location_24"
         />
 
 </FrameLayout>

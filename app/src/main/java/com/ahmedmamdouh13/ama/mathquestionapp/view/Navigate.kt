@@ -22,7 +22,6 @@ object Navigate {
         op1: Int,
         op2: Int
     ) {
-//        timerFragment = TimerFragment(equation, op1, op2)
        val timerFragment = TimerFragment()
 
         val bundle = Bundle()
@@ -39,9 +38,5 @@ object Navigate {
             .commitNow()
     }
 
-//    fun clear(supportFragmentManager: FragmentManager) {
-//        supportFragmentManager.beginTransaction().remove(timerFragment)
-//        supportFragmentManager.beginTransaction().remove(calculatorFragment)
-//    }
 
 }

@@ -2,6 +2,9 @@ package com.ahmedmamdouh13.ama.mathquestionapp.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -20,10 +23,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var locationButton: ImageView
     private lateinit var recyclerview: RecyclerView
     private lateinit var fab: FloatingActionButton
     private lateinit var mainContainer: FragmentContainerView
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var placeHolder: TextView
 
     private lateinit var equationsAdapter: EquationsAdapter
     private var equationMap: LinkedHashMap<Int, EquationModel> = LinkedHashMap()
@@ -31,29 +36,59 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainViewModel = ViewModelProvider(this) .get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         fab = findViewById(R.id.addequation_fab)
         recyclerview = findViewById(R.id.recyclerview)
         mainContainer = findViewById(R.id.main_container)
+        locationButton = findViewById(R.id.location_imageview_mainactivity)
+        placeHolder = findViewById(R.id.placeholder_mainactivty)
 
 
+        setOnAddClicked()
 
+        setUpRecyclerView()
+
+        observeEquations()
+
+        observeEquationResults()
+
+        setOnLocationButtonClicked()
+
+        listenToLocationChanges()
+    }
+
+    private fun setOnAddClicked() {
         fab.setOnClickListener {
             Navigate.toCalculatorFragment(supportFragmentManager, R.id.main_container)
+            mainVisibility(false)
+        }
+    }
+
+    private fun mainVisibility(isVisible: Boolean) {
+        if (!isVisible) {
             mainContainer.visibility = View.VISIBLE
-            it.visibility = View.GONE
-                println("Clicked")
-            }
+            fab.visibility = View.GONE
+            locationButton.visibility = View.GONE
 
-            setUpRecyclerView()
+        } else {
+            mainContainer.visibility = View.GONE
+            fab.visibility = View.VISIBLE
+            locationButton.visibility = View.VISIBLE
+        }
+    }
 
+    private fun listenToLocationChanges() {
+        mainViewModel._locationInfoLiveData.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
+    }
 
-            observeEquations()
-
-
-            observeEquationResults()
-
+    private fun setOnLocationButtonClicked() {
+        locationButton.setOnClickListener {
+            println("location?!!!!!")
+            mainViewModel.getLocationInfo(this)
+        }
     }
 
     private fun observeEquationResults() {
@@ -90,8 +125,8 @@ class MainActivity : AppCompatActivity() {
             equationMap[it.jobId] = it
             equationsAdapter.notifyDataSetChanged()
             equationsAdapter.setDelayedTimeCounter()
-            mainContainer.visibility = View.GONE
-            fab.visibility = View.VISIBLE
+            mainVisibility(true)
+            placeHolder.visibility = View.GONE
         }
     }
 
@@ -113,11 +148,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (mainContainer.visibility == View.VISIBLE) {
-            mainContainer.visibility = View.GONE
-            fab.visibility = View.VISIBLE
-        }
-        else
-        super.onBackPressed()
+            mainVisibility(true)
+        } else
+            super.onBackPressed()
     }
 
 }
